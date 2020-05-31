@@ -6,14 +6,14 @@
 /*global grammar _ */
 
 function Diagram() {
-  this.title   = undefined;
-  this.actors  = [];
+  this.title = undefined;
+  this.actors = [];
   this.signals = [];
 }
 /*
  * Return an existing actor with this alias, or creates a new one with alias and name.
  */
-Diagram.prototype.getActor = function(alias, name) {
+Diagram.prototype.getActor = function (alias, name) {
   alias = alias.trim();
 
   var i;
@@ -24,13 +24,13 @@ Diagram.prototype.getActor = function(alias, name) {
     }
   }
   i = actors.push(new Diagram.Actor(alias, (name || alias), actors.length));
-  return actors[ i - 1 ];
+  return actors[i - 1];
 };
 
 /*
  * Parses the input as either a alias, or a "name as alias", and returns the corresponding actor.
  */
-Diagram.prototype.getActorWithAlias = function(input) {
+Diagram.prototype.getActorWithAlias = function (input) {
   input = input.trim();
 
   // We are lazy and do some of the parsing in javascript :(. TODO move into the .jison file.
@@ -38,7 +38,7 @@ Diagram.prototype.getActorWithAlias = function(input) {
   var alias;
   var name;
   if (s) {
-    name  = s[1].trim();
+    name = s[1].trim();
     alias = s[2].trim();
   } else {
     name = alias = input;
@@ -46,49 +46,49 @@ Diagram.prototype.getActorWithAlias = function(input) {
   return this.getActor(alias, name);
 };
 
-Diagram.prototype.setTitle = function(title) {
+Diagram.prototype.setTitle = function (title) {
   this.title = title;
 };
 
-Diagram.prototype.addSignal = function(signal) {
+Diagram.prototype.addSignal = function (signal) {
   this.signals.push(signal);
 };
 
-Diagram.Actor = function(alias, name, index) {
+Diagram.Actor = function (alias, name, index) {
   this.alias = alias;
-  this.name  = name;
+  this.name = name;
   this.index = index;
 };
 
-Diagram.Signal = function(actorA, signaltype, actorB, message) {
-  this.type       = 'Signal';
-  this.actorA     = actorA;
-  this.actorB     = actorB;
-  this.linetype   = signaltype & 3;
-  this.arrowtype  = (signaltype >> 2) & 3;
-  this.message    = message;
+Diagram.Signal = function (actorA, signaltype, actorB, message) {
+  this.type = 'Signal';
+  this.actorA = actorA;
+  this.actorB = actorB;
+  this.linetype = signaltype & 3;
+  this.arrowtype = (signaltype >> 2) & 3;
+  this.message = message;
 };
 
-Diagram.Signal.prototype.isSelf = function() {
+Diagram.Signal.prototype.isSelf = function () {
   return this.actorA.index == this.actorB.index;
 };
 
-Diagram.Note = function(actor, placement, message) {
-  this.type      = 'Note';
-  this.actor     = actor;
+Diagram.Note = function (actor, placement, message) {
+  this.type = 'Note';
+  this.actor = actor;
   this.placement = placement;
-  this.message   = message;
+  this.message = message;
 
   if (this.hasManyActors() && actor[0] == actor[1]) {
     throw new Error('Note should be over two different actors');
   }
 };
 
-Diagram.Note.prototype.hasManyActors = function() {
+Diagram.Note.prototype.hasManyActors = function () {
   return _.isArray(this.actor);
 };
 
-Diagram.unescape = function(s) {
+Diagram.unescape = function (s) {
   // Turn "\\n" into "\n"
   return s.trim().replace(/^"(.*)"$/m, '$1').replace(/\\n/gm, '\n');
 };
@@ -116,11 +116,11 @@ Diagram.PLACEMENT = {
 if (typeof Object.getPrototypeOf !== 'function') {
   /* jshint -W103 */
   if (typeof 'test'.__proto__ === 'object') {
-    Object.getPrototypeOf = function(object) {
+    Object.getPrototypeOf = function (object) {
       return object.__proto__;
     };
   } else {
-    Object.getPrototypeOf = function(object) {
+    Object.getPrototypeOf = function (object) {
       // May break if the constructor has been tampered with
       return object.constructor.prototype;
     };
@@ -144,12 +144,12 @@ function ParseError(message, hash) {
 ParseError.prototype = new Error();
 Diagram.ParseError = ParseError;
 
-Diagram.parse = function(input) {
+Diagram.parse = function (input) {
   // TODO jison v0.4.17 changed their API slightly, so parser is no longer defined:
 
   // Create the object to track state and deal with errors
   parser.yy = new Diagram();
-  parser.yy.parseError = function(message, hash) {
+  parser.yy.parseError = function (message, hash) {
     throw new ParseError(message, hash);
   };
 

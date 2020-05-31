@@ -206,6 +206,10 @@ Related
 * [flowchart.js](https://adrai.github.io/flowchart.js/) A similar project that draws flow charts in the browser
 
 
+Notes
+------
+node_modules/.bin/preprocess src/main.js . -SNAP=true > docs/js/sequence-diagram-snap.js
+
 Licence (Simplified BSD License)
 -------
 

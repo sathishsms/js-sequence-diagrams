@@ -4,7 +4,7 @@ NODE_MODULES := node_modules/.bin
 BOWER_COMPONENTS := bower_components
 
 all: lint js css test
-js: dist/sequence-diagram-min.js dist/sequence-diagram-raphael-min.js dist/sequence-diagram-snap-min.js
+js: dist/sequence-diagram-snap-min.js
 css: dist/sequence-diagram-min.css font
 font: dist/danielbd.woff2 dist/danielbd.woff
 
