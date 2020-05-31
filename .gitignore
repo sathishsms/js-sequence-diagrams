@@ -3,3 +3,5 @@ bower_components/
 build/
 package.json
 dist/
+package-lock.json
+package.json
